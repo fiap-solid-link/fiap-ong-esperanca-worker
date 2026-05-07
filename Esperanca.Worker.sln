@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B4024AD7-2145-4A27-AE2D-3EDFC9AB9C94}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BBA0F517-3A8E-4E78-90D6-444E74DD8F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperanca.Worker.WebApi", "src\Esperanca.Worker.WebApi\Esperanca.Worker.WebApi.csproj", "{06F2D527-91FB-446F-9540-9E49D2C6B013}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperanca.Worker.Application", "src\Esperanca.Worker.Application\Esperanca.Worker.Application.csproj", "{1125A2EA-1B50-4DC0-8E26-A1FC985546BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperanca.Worker.Domain", "src\Esperanca.Worker.Domain\Esperanca.Worker.Domain.csproj", "{478899F1-B02F-42FF-A49A-CCA58263057B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperanca.Worker.Infrastructure", "src\Esperanca.Worker.Infrastructure\Esperanca.Worker.Infrastructure.csproj", "{783742E3-3E37-4FA7-8552-412DBB2D000C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperanca.Worker.UnitTests", "test\Esperanca.Worker.UnitTests\Esperanca.Worker.UnitTests.csproj", "{8F7921BD-658A-4FAB-8F26-2A0645851D0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06F2D527-91FB-446F-9540-9E49D2C6B013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F2D527-91FB-446F-9540-9E49D2C6B013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06F2D527-91FB-446F-9540-9E49D2C6B013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F2D527-91FB-446F-9540-9E49D2C6B013}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1125A2EA-1B50-4DC0-8E26-A1FC985546BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1125A2EA-1B50-4DC0-8E26-A1FC985546BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1125A2EA-1B50-4DC0-8E26-A1FC985546BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1125A2EA-1B50-4DC0-8E26-A1FC985546BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{478899F1-B02F-42FF-A49A-CCA58263057B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{478899F1-B02F-42FF-A49A-CCA58263057B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{478899F1-B02F-42FF-A49A-CCA58263057B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{478899F1-B02F-42FF-A49A-CCA58263057B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{783742E3-3E37-4FA7-8552-412DBB2D000C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{783742E3-3E37-4FA7-8552-412DBB2D000C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{783742E3-3E37-4FA7-8552-412DBB2D000C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{783742E3-3E37-4FA7-8552-412DBB2D000C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F7921BD-658A-4FAB-8F26-2A0645851D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7921BD-658A-4FAB-8F26-2A0645851D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F7921BD-658A-4FAB-8F26-2A0645851D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F7921BD-658A-4FAB-8F26-2A0645851D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{06F2D527-91FB-446F-9540-9E49D2C6B013} = {B4024AD7-2145-4A27-AE2D-3EDFC9AB9C94}
+		{1125A2EA-1B50-4DC0-8E26-A1FC985546BD} = {B4024AD7-2145-4A27-AE2D-3EDFC9AB9C94}
+		{478899F1-B02F-42FF-A49A-CCA58263057B} = {B4024AD7-2145-4A27-AE2D-3EDFC9AB9C94}
+		{783742E3-3E37-4FA7-8552-412DBB2D000C} = {B4024AD7-2145-4A27-AE2D-3EDFC9AB9C94}
+		{8F7921BD-658A-4FAB-8F26-2A0645851D0F} = {BBA0F517-3A8E-4E78-90D6-444E74DD8F2D}
+	EndGlobalSection
+EndGlobal

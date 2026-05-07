@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: esperanca-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: campanha_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  campanha-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: esperanca-campanha-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__campanhaDb: "Host=postgres;Port=5432;Database=campanha_db;Username=postgres;Password=postgres"
+      Jwt__SecretKey: "SuperSecretKey-ParaDesenvolvimento-MinimoDE32Chars!"
+      Jwt__Issuer: "esperanca-campanha-api"
+      Jwt__Audience: "esperanca-platform"
+      Jwt__AccessTokenExpirationMinutes: "30"
+    ports:
+      - "5010:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
