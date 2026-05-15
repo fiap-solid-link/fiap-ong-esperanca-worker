@@ -1,7 +1,7 @@
 # ============================================
 # Stage 1: Build (SDK - compilação e publish)
 # ============================================
-FROM mcr.microsoft.com/dotnet/sdk:10.0-bookworm-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
 WORKDIR /src
 
 # 0. Copiar arquivos de configuração centralizados
