@@ -12,14 +12,14 @@ COPY ["Directory.Packages.props", "."]
 # 1. Copiar apenas arquivos .csproj
 # Estratégia de cache: se apenas código .cs mudar, essa layer é reutilizada
 # Resultado: restore de pacotes NuGet não é refeito desnecessariamente
-COPY ["src/Esperanca.Campanha.Domain/Esperanca.Campanha.Domain.csproj", "src/Esperanca.Campanha.Domain/"]
-COPY ["src/Esperanca.Campanha.Application/Esperanca.Campanha.Application.csproj", "src/Esperanca.Campanha.Application/"]
-COPY ["src/Esperanca.Campanha.Infrastructure/Esperanca.Campanha.Infrastructure.csproj", "src/Esperanca.Campanha.Infrastructure/"]
-COPY ["src/Esperanca.Campanha.WebApi/Esperanca.Campanha.WebApi.csproj", "src/Esperanca.Campanha.WebApi/"]
+COPY ["src/Esperanca.Worker.Domain/Esperanca.Worker.Domain.csproj", "src/Esperanca.Worker.Domain/"]
+COPY ["src/Esperanca.Worker.Application/Esperanca.Worker.Application.csproj", "src/Esperanca.Worker.Application/"]
+COPY ["src/Esperanca.Worker.Infrastructure/Esperanca.Worker.Infrastructure.csproj", "src/Esperanca.Worker.Infrastructure/"]
+COPY ["src/Esperanca.Worker.WebApi/Esperanca.Worker.WebApi.csproj", "src/Esperanca.Worker.WebApi/"]
 
 # 2. Restore de pacotes NuGet
 # Layer cacheada — só é refeita se os .csproj ou props mudarem
-RUN dotnet restore "src/Esperanca.Campanha.WebApi/Esperanca.Campanha.WebApi.csproj"
+RUN dotnet restore "src/Esperanca.Worker.WebApi/Esperanca.Worker.WebApi.csproj"
 
 # 3. Copiar todo o código-fonte restante
 # Feito APÓS o restore para maximizar reuso de cache
@@ -30,7 +30,7 @@ COPY . .
 # -o /app/publish: diretório de saída dos binários
 # /p:UseAppHost=false: não gera executável nativo (reduz tamanho)
 # /p:PublishTrimmed=false: mantém compatibilidade com MediatR/reflection
-RUN dotnet publish "src/Esperanca.Campanha.WebApi/Esperanca.Campanha.WebApi.csproj" \
+RUN dotnet publish "src/Esperanca.Worker.WebApi/Esperanca.Worker.WebApi.csproj" \
     -c Release \
     -o /app/publish \
     /p:UseAppHost=false \
@@ -64,4 +64,4 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "Esperanca.Campanha.WebApi.dll"]
+ENTRYPOINT ["dotnet", "Esperanca.Worker.WebApi.dll"]
