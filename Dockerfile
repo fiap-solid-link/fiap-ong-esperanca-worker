@@ -19,6 +19,13 @@ RUN dotnet publish "src/Esperanca.Worker.Service/Esperanca.Worker.Service.csproj
 
 FROM base AS final
 WORKDIR /app
+
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
 COPY --from=build /app/publish .
+
+RUN chown -R appuser:appgroup /app
+
+USER appuser
 
 ENTRYPOINT ["dotnet", "Esperanca.Worker.Service.dll"]
