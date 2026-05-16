@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<ItemGroup>
+		<PackageReference Include="Esperanca.Message" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+		<PackageReference Include="MongoDB.Driver" />
+		<PackageReference Include="RabbitMQ.Client" />
+		<PackageReference Include="Serilog.Extensions.Hosting" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Settings.Configuration" />
+	</ItemGroup>
+
+</Project>
