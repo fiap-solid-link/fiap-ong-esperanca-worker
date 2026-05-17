@@ -1,38 +1,31 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: esperanca-postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: campanha_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  campanha-api:
+  worker:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: esperanca-campanha-api
+    container_name: esperanca-worker
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__campanhaDb: "Host=postgres;Port=5432;Database=campanha_db;Username=postgres;Password=postgres"
-      Jwt__SecretKey: "SuperSecretKey-ParaDesenvolvimento-MinimoDE32Chars!"
-      Jwt__Issuer: "esperanca-campanha-api"
-      Jwt__Audience: "esperanca-platform"
-      Jwt__AccessTokenExpirationMinutes: "30"
-    ports:
-      - "5010:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
+      DOTNET_ENVIRONMENT: Development
 
-volumes:
-  postgres_data:
+      ConnectionStrings__MongoDb: "mongodb://host.docker.internal:27017"
+      Mongo__DatabaseName: "doacoes_db"
+      Mongo__CollectionName: "doacoes"
+
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__User: "guest"
+      RabbitMq__Password: "guest"
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Exchange: "esperanca.doacoes"
+      RabbitMq__DeadLetterExchange: "esperanca.doacoes.dlx"
+
+      RabbitMq__RecebidaQueue: "doacoes-recebidas"
+      RabbitMq__RecebidaRoutingKey: "recebida"
+      RabbitMq__RecebidaDeadLetterQueue: "doacoes-recebidas-dlq"
+
+      RabbitMq__ProcessadaQueue: "doacoes-processadas"
+      RabbitMq__ProcessadaRoutingKey: "processada"
+      RabbitMq__ProcessadaDeadLetterQueue: "doacoes-processadas-dlq"
+
+      RabbitMq__PrefetchCount: "1"
+    restart: unless-stopped
