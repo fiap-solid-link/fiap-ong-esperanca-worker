@@ -6,8 +6,8 @@ public sealed class RabbitMqOptions
 
     public string Host { get; init; } = "localhost";
     public int Port { get; init; } = 5672;
-    public string User { get; init; } = "guest";
-    public string Password { get; init; } = "guest";
+    public string User { get; init; } = string.Empty;
+    public string Password { get; init; } = string.Empty;
     public string VirtualHost { get; init; } = "/";
 
     public string Exchange { get; init; } = "esperanca.doacoes";

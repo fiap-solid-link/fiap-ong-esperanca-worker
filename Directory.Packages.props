@@ -1,6 +1,6 @@
 <Project>
   <ItemGroup>
-    <PackageVersion Include="Esperanca.Message" Version="1.1.0" />
+    <PackageVersion Include="Esperanca.Message" Version="1.2.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.5" />
     <PackageVersion Include="MongoDB.Driver" Version="3.8.0" />

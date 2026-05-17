@@ -9,9 +9,12 @@ services:
 
       ConnectionStrings__MongoDb: "mongodb://host.docker.internal:27017"
       Mongo__DatabaseName: "doacoes_db"
-      Mongo__CollectionName: "doacoes"
+      Mongo__DoacoesCollection: "doacoes"
+      Mongo__PainelMacroCollection: "painel_macro"
+      Mongo__ListaCampanhasCollection: "lista_campanhas"
+      Mongo__CampanhaDetalheCollection: "campanha_detalhe"
 
-      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Host: "host.docker.internal"
       RabbitMq__Port: "5672"
       RabbitMq__User: "guest"
       RabbitMq__Password: "guest"
@@ -22,10 +25,6 @@ services:
       RabbitMq__RecebidaQueue: "doacoes-recebidas"
       RabbitMq__RecebidaRoutingKey: "recebida"
       RabbitMq__RecebidaDeadLetterQueue: "doacoes-recebidas-dlq"
-
-      RabbitMq__ProcessadaQueue: "doacoes-processadas"
-      RabbitMq__ProcessadaRoutingKey: "processada"
-      RabbitMq__ProcessadaDeadLetterQueue: "doacoes-processadas-dlq"
 
       RabbitMq__PrefetchCount: "1"
     restart: unless-stopped

@@ -24,12 +24,11 @@ public sealed class DoacaoWorker(
     {
         try
         {
-            await doacaoMongoService.CriarIndiceAsync(stoppingToken);
+            await doacaoMongoService.CriarIndicesAsync(stoppingToken);
             await ConnectAndConsumeAsync(stoppingToken);
         }
-        catch (OperationCanceledException ex) when (stoppingToken.IsCancellationRequested)
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
         {
-            logger.LogInformation(ex, "Worker de doações encerrado.");
         }
         catch (Exception ex)
         {
@@ -55,20 +54,6 @@ public sealed class DoacaoWorker(
             _options.Exchange,
             _options.RecebidaQueue,
             _options.RecebidaRoutingKey,
-            _options.DeadLetterExchange,
-            ct);
-
-        await RabbitMqTopology.DeclareDeadLetterAsync(
-            _channel,
-            _options.DeadLetterExchange,
-            _options.ProcessadaDeadLetterQueue,
-            ct);
-
-        await RabbitMqTopology.DeclareWorkQueueAsync(
-            _channel,
-            _options.Exchange,
-            _options.ProcessadaQueue,
-            _options.ProcessadaRoutingKey,
             _options.DeadLetterExchange,
             ct);
 
@@ -114,21 +99,6 @@ public sealed class DoacaoWorker(
                 evento.IdCampanha,
                 evento.Valor);
 
-            var jaProcessada = await doacaoMongoService.ExistePorIdempotencyKeyAsync(
-                evento.IdempotencyKey,
-                CancellationToken.None);
-
-            if (jaProcessada)
-            {
-                logger.LogInformation(
-                    "Doação já processada pelo worker. IdDoacao={IdDoacao}, IdempotencyKey={IdempotencyKey}",
-                    evento.IdDoacao,
-                    evento.IdempotencyKey);
-
-                await _channel.BasicAckAsync(deliveryTag, multiple: false);
-                return;
-            }
-
             var dataProcessamento = DateTime.UtcNow;
 
             var document = new DoacaoDocument
@@ -142,22 +112,27 @@ public sealed class DoacaoWorker(
                 IdempotencyKey = evento.IdempotencyKey.ToString()
             };
 
-            await doacaoMongoService.InserirAsync(document, CancellationToken.None);
+            var resultado = await doacaoMongoService.ProcessarDoacaoAsync(document, evento.IdCampanha, CancellationToken.None);
 
-            var processada = new DoacaoProcessadaEvent(
-                evento.IdDoacao,
-                evento.IdCampanha,
-                evento.Valor,
-                dataProcessamento);
+            if (resultado.Processada)
+            {
+                var eventoProcessado = new DoacaoProcessadaEvent(
+                    evento.IdDoacao,
+                    evento.IdCampanha,
+                    evento.Valor,
+                    resultado.ValorTotalArrecadado,
+                    dataProcessamento);
 
-            await doacaoProcessadaPublisher.PublicarAsync(processada, CancellationToken.None);
+                await doacaoProcessadaPublisher.PublicarAsync(eventoProcessado, CancellationToken.None);
+
+                logger.LogInformation(
+                    "Doação processada, projeções atualizadas e evento DoacaoProcessada publicado. IdDoacao={IdDoacao}, IdCampanha={IdCampanha}, ValorTotalArrecadado={ValorTotalArrecadado}",
+                    evento.IdDoacao,
+                    evento.IdCampanha,
+                    resultado.ValorTotalArrecadado);
+            }
 
             await _channel.BasicAckAsync(deliveryTag, multiple: false);
-
-            logger.LogInformation(
-                "Doação processada com sucesso. IdDoacao={IdDoacao}, IdCampanha={IdCampanha}",
-                evento.IdDoacao,
-                evento.IdCampanha);
         }
         catch (JsonException ex)
         {
