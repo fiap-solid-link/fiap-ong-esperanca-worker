@@ -27,14 +27,13 @@ public sealed class DoacaoWorker(
             await doacaoMongoService.CriarIndiceAsync(stoppingToken);
             await ConnectAndConsumeAsync(stoppingToken);
         }
-        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        catch (OperationCanceledException ex) when (stoppingToken.IsCancellationRequested)
         {
-            logger.LogInformation("Worker de doações encerrado.");
+            logger.LogInformation(ex, "Worker de doações encerrado.");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Worker de doações encerrou com erro.");
-            throw;
+            throw new InvalidOperationException("Worker de doações encerrou inesperadamente.", ex);
         }
     }
 

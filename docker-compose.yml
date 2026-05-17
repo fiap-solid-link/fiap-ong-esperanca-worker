@@ -11,7 +11,7 @@ services:
       Mongo__DatabaseName: "doacoes_db"
       Mongo__CollectionName: "doacoes"
 
-      RabbitMq__Host: "host.docker.internal"
+      RabbitMq__Host: "rabbitmq"
       RabbitMq__Port: "5672"
       RabbitMq__User: "guest"
       RabbitMq__Password: "guest"

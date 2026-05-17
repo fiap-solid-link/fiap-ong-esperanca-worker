@@ -20,7 +20,7 @@ RUN dotnet publish "src/Esperanca.Worker.Service/Esperanca.Worker.Service.csproj
 FROM base AS final
 WORKDIR /app
 
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+RUN groupadd --system appgroup && useradd --system --gid appgroup --create-home appuser
 
 COPY --from=build /app/publish .
 
