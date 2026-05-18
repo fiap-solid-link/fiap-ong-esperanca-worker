@@ -27,9 +27,8 @@ builder.Services.AddSingleton<IMongoClient>(_ =>
 
 builder.Services.AddSingleton<DoacaoMongoService>();
 builder.Services.AddSingleton<RabbitMqConnectionFactory>();
-builder.Services.AddSingleton<DoacaoProcessadaPublisher>();
-
 builder.Services.AddHostedService<DoacaoWorker>();
+builder.Services.AddSingleton<DoacaoProcessadaPublisher>();
 
 builder.Services.AddSerilog((services, loggerConfiguration) =>
 {
