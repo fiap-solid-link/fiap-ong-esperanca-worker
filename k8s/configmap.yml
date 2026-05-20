@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: worker-config
+  namespace: esperanca
+data:
+  DOTNET_ENVIRONMENT: "Development"
+  ConnectionStrings__MongoDb: "mongodb://mongo:27017"
+  RabbitMq__Host: "rabbitmq"
+  RabbitMq__Port: "5672"
+  RabbitMq__VirtualHost: "/"
+  RabbitMq__Exchange: "esperanca.doacoes"
+  RabbitMq__DeadLetterExchange: "esperanca.doacoes.dlx"
+  RabbitMq__RecebidaQueue: "doacoes-recebidas"
+  RabbitMq__RecebidaRoutingKey: "recebida"
+  RabbitMq__RecebidaDeadLetterQueue: "doacoes-recebidas-dlq"
+  RabbitMq__ProcessadaQueue: "doacoes-processadas"
+  RabbitMq__ProcessadaRoutingKey: "processada"
+  RabbitMq__ProcessadaDeadLetterQueue: "doacoes-processadas-dlq"
+  RabbitMq__PrefetchCount: "1"
+  Mongo__DatabaseName: "doacoes_db"
+  Mongo__DoacoesCollection: "doacoes"
+  Mongo__PainelMacroCollection: "painel_macro"
+  Mongo__ListaCampanhasCollection: "lista_campanhas"
+  Mongo__CampanhaDetalheCollection: "campanha_detalhe"
