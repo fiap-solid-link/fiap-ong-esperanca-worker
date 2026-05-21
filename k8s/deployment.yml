@@ -14,6 +14,7 @@ spec:
       containers:
         - name: worker
           image: fzndev/fiap-ong-esperanca-worker:latest
+          imagePullPolicy: Always
           envFrom:
             - configMapRef: { name: worker-config }
           env:
