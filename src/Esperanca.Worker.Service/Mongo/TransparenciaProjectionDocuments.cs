@@ -15,8 +15,29 @@ internal sealed class PainelMacroProjectionDocument
     [BsonElement("totalDoacoes")]
     public int TotalDoacoes { get; set; }
 
+    [BsonElement("totalCampanhasAtivas")]
+    public int TotalCampanhasAtivas { get; set; }
+
+    [BsonElement("totalCampanhasConcluidas")]
+    public int TotalCampanhasConcluidas { get; set; }
+
+    [BsonElement("topDoadores")]
+    public List<TopDoadorProjectionDocument> TopDoadores { get; set; } = [];
+
     [BsonElement("atualizadoEm")]
     public DateTime AtualizadoEm { get; set; }
+}
+
+internal sealed class TopDoadorProjectionDocument
+{
+    [BsonElement("apelido")]
+    public string Apelido { get; set; } = string.Empty;
+
+    [BsonElement("totalDoado")]
+    public decimal TotalDoado { get; set; }
+
+    [BsonElement("quantidadeDoacoes")]
+    public int QuantidadeDoacoes { get; set; }
 }
 
 [BsonIgnoreExtraElements]
@@ -31,6 +52,9 @@ internal sealed class CampanhaListaProjectionDocument
 
     [BsonElement("valorArrecadado")]
     public decimal ValorArrecadado { get; set; }
+
+    [BsonElement("status")]
+    public string Status { get; set; } = string.Empty;
 }
 
 [BsonIgnoreExtraElements]
@@ -50,7 +74,6 @@ internal sealed class CampanhaDetalheProjectionDocument
     public List<DoacaoAnonimaProjectionDocument> Doacoes { get; set; } = [];
 }
 
-[BsonIgnoreExtraElements]
 internal sealed class DoacaoAnonimaProjectionDocument
 {
     [BsonElement("apelidoDoador")]

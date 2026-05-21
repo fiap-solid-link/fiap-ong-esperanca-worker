@@ -77,13 +77,14 @@ public sealed class DoacaoMongoService
 
         await _doacoes.InsertOneAsync(document, cancellationToken: ct);
 
-        await AtualizarPainelMacroAsync(document, ct);
         await AtualizarListaCampanhasAsync(idCampanha, document, ct);
 
         var valorTotalArrecadado = await AtualizarDetalheCampanhaAsync(
             idCampanha,
             document,
             ct);
+
+        await AtualizarPainelMacroAsync(document, ct);
 
         return new ProcessarDoacaoResult(
             true,
@@ -99,9 +100,18 @@ public sealed class DoacaoMongoService
 
     private async Task AtualizarPainelMacroAsync(DoacaoDocument document, CancellationToken ct)
     {
+        var campanhas = await _listaCampanhas
+            .Find(FilterDefinition<CampanhaListaProjectionDocument>.Empty)
+            .ToListAsync(ct);
+
+        var topDoadores = await ObterTopDoadoresAsync(ct);
+
         var update = Builders<PainelMacroProjectionDocument>.Update
             .Inc(x => x.TotalArrecadado, document.Valor)
             .Inc(x => x.TotalDoacoes, 1)
+            .Set(x => x.TotalCampanhasAtivas, campanhas.Count(x => x.Status == "EmAndamento"))
+            .Set(x => x.TotalCampanhasConcluidas, campanhas.Count(x => x.Status == "Concluida"))
+            .Set(x => x.TopDoadores, topDoadores)
             .Set(x => x.AtualizadoEm, document.DataProcessamento);
 
         await _painelMacro.UpdateOneAsync(
@@ -153,5 +163,31 @@ public sealed class DoacaoMongoService
         }
 
         return projection.ValorArrecadado;
+    }
+
+    private async Task<List<TopDoadorProjectionDocument>> ObterTopDoadoresAsync(CancellationToken ct)
+    {
+        var doacoes = await _doacoes
+            .Find(FilterDefinition<DoacaoDocument>.Empty)
+            .ToListAsync(ct);
+
+        return doacoes
+            .Where(x => !string.IsNullOrWhiteSpace(x.IdDoador))
+            .GroupBy(x => x.IdDoador)
+            .Select(g => new
+            {
+                TotalDoado = g.Sum(x => x.Valor),
+                QuantidadeDoacoes = g.Count()
+            })
+            .OrderByDescending(x => x.TotalDoado)
+            .ThenByDescending(x => x.QuantidadeDoacoes)
+            .Take(5)
+            .Select((x, index) => new TopDoadorProjectionDocument
+            {
+                Apelido = $"Doador anônimo #{index + 1}",
+                TotalDoado = x.TotalDoado,
+                QuantidadeDoacoes = x.QuantidadeDoacoes
+            })
+            .ToList();
     }
 }
